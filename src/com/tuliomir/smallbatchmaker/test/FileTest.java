@@ -29,7 +29,7 @@ public class FileTest {
 	
 	@After
 	public void destroyTestFile() {
-		PhysicalFile.destroy(EXAMPLE_TXT_FILENAME);
+		PhysicalFile.destroy(physicalFile);
 	}
 
 	@Test

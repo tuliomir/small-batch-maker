@@ -3,6 +3,8 @@ package com.tuliomir.smallbatchmaker.test;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.tuliomir.smallbatchmaker.File;
+
 public class PhysicalFile {
 	
 	/**
@@ -17,14 +19,11 @@ public class PhysicalFile {
 			if (!physicalFile.createNewFile()) {
 				physicalFile.delete();
 				if (!physicalFile.createNewFile()) {
-					throw new Exception("Cannot empty file.");
+					System.err.println("Cannot empty file.");
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error creating file: " + fileName);
 			e.printStackTrace();
 		}
 		return physicalFile;
@@ -49,7 +48,7 @@ public class PhysicalFile {
 			out.append(incrementalString);
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error writing to file: " + physicalFile.getAbsolutePath());
 			e.printStackTrace();
 		}
 	}
@@ -57,5 +56,13 @@ public class PhysicalFile {
 	public static void destroy(String fileName) {
 		java.io.File physicalFile = new java.io.File(fileName);
 		physicalFile.delete();
+	}
+	
+	public static void destroy(java.io.File physicalFile) {
+		physicalFile.delete();
+	}
+	
+	public static void destroy(File file) {
+		file.getPhysicalFile().delete();
 	}
 }

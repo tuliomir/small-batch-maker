@@ -13,8 +13,10 @@ public class File {
 	private String fileName;
 	private String filePath;
 	private boolean isDirectory;
+	private java.io.File physicalFile;
 	
 	public File(java.io.File physicalFile) {
+		this.physicalFile = physicalFile;
 		this.fileSize = physicalFile.length();
 		this.fileName = physicalFile.getName();
 		
@@ -48,5 +50,12 @@ public class File {
 
 	public boolean isDirectory() {
 		return isDirectory;
+	}
+
+	/**
+	 * @return the physicalFile
+	 */
+	public java.io.File getPhysicalFile() {
+		return physicalFile;
 	}
 }
