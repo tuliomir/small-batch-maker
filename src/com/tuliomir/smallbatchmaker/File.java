@@ -12,6 +12,7 @@ public class File {
 	private long fileSize;
 	private String fileName;
 	private String filePath;
+	private boolean isDirectory;
 	
 	public File(java.io.File physicalFile) {
 		this.fileSize = physicalFile.length();
@@ -20,13 +21,8 @@ public class File {
 		String absolutePath = physicalFile.getAbsolutePath();
 		this.filePath = absolutePath.
 		    substring(0,absolutePath.lastIndexOf(java.io.File.separator));
-	}
-
-	public File(long fileSize, String fileName, String filePath) {
-		super();
-		this.fileSize = fileSize;
-		this.fileName = fileName;
-		this.filePath = filePath;
+		
+		this.isDirectory = physicalFile.isDirectory();
 	}
 
 	/**
@@ -49,7 +45,8 @@ public class File {
 	public String getFilePath() {
 		return filePath;
 	}
-	
-	
-	
+
+	public boolean isDirectory() {
+		return isDirectory;
+	}
 }
