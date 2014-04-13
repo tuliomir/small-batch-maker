@@ -52,23 +52,11 @@ public class FileTest {
 	
 	@Test
 	public void shouldReturnSizeCorrectly() {
-		String testString;
-		int stringLength;
+		int stringLength = Util.randomInt(1, 100);
 		
-		// Generating random string
-		stringLength = 1 + Util.randomInt(1, 100);
-		StringBuffer outputBuffer = new StringBuffer(stringLength);
+		File testFile = PhysicalFile.createFileWithSize(EXAMPLE_TXT_FILENAME, stringLength);
 		
-		for (int i=0; i<stringLength; i++) {
-			outputBuffer.append("a");
-		}
-		testString = outputBuffer.toString();
-		
-		// Pushing the string into the file
-		PhysicalFile.increment(physicalFile,testString);
-		File testFile = new File(physicalFile);
-		
-		assertEquals(testString.length(),testFile.getFileSize());
+		assertEquals(stringLength, testFile.getFileSize());
 	}
 
 }

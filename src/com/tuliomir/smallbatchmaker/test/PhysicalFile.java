@@ -5,10 +5,16 @@ import java.io.IOException;
 
 import com.tuliomir.smallbatchmaker.File;
 
+/**
+ * Creates, destroys and manipulates physical files, associating them with
+ * logical Files when appropriate.
+ * @author tuliomir
+ *
+ */
 public class PhysicalFile {
 	
 	/**
-	 * Creates an empty test file
+	 * Creates an empty file
 	 * @param fileName Name of the file to be created
 	 * @return java.io.File pointing to the empty file
 	 */
@@ -42,6 +48,11 @@ public class PhysicalFile {
 		return physicalFile;
 	}
 	
+	/**
+	 * Increments the size of a file by appending a string to it.
+	 * @param physicalFile Physical file to be incremented.
+	 * @param incrementalString String to be appended.
+	 */
 	public static void increment(java.io.File physicalFile, String incrementalString) {
 		try {
 			FileWriter out = new FileWriter(physicalFile);
@@ -53,20 +64,58 @@ public class PhysicalFile {
 		}
 	}
 	
+	/**
+	 * Destroys a physical file with the associated name.<br>
+	 * <em>WARNING:</em> Be careful about the path of the filename! It may be relative
+	 * to where the program is running.
+	 * @param fileName Name of the file to be deleted
+	 */
 	public static void destroy(String fileName) {
 		java.io.File physicalFile = new java.io.File(fileName);
 		physicalFile.delete();
 	}
 	
+	/**
+	 * Destroys a physical file
+	 * @param physicalFile Physical file to be destroyed
+	 */
 	public static void destroy(java.io.File physicalFile) {
 		physicalFile.delete();
 	}
 	
+	/**
+	 * Destroys the physical file associated to a logical file
+	 * @param file Logical file which will have its physical file deleted
+	 */
 	public static void destroy(File file) {
 		if (file.isDirectory()) {
 			PhysicalDirectory.destroy(file.getDirectory());
 		} else {
 			file.getPhysicalFile().delete();
 		}
+	}
+	
+
+	/**
+	 * Creates a Logical file with a specific size
+	 * @param fileName Name of the file
+	 * @param fileSize Size of the file in bytes
+	 * @return Logical encapsulation of the physical file created 
+	 */
+	public static File createFileWithSize(String fileName, int fileSize){
+		String testString;
+		
+		// Generating random string
+		StringBuffer outputBuffer = new StringBuffer(fileSize);
+		
+		for (int i=0; i<fileSize; i++) {
+			outputBuffer.append("a");
+		}
+		testString = outputBuffer.toString();
+		
+		// Pushing the string into the file
+		File result = new File(create(fileName, testString));
+		
+		return result;
 	}
 }
