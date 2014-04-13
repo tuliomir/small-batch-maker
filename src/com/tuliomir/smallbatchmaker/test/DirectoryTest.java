@@ -9,7 +9,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.tuliomir.smallbatchmaker.Directory;
 import com.tuliomir.smallbatchmaker.File;
 
 /**
@@ -19,40 +18,42 @@ import com.tuliomir.smallbatchmaker.File;
 public class DirectoryTest {
 
 	private static final String TEST_DIR_NAME = "testDir";
-	private java.io.File physicalDir;
+	private File logicalDir;
 	
 	@Before
 	public void createTestDirectory() {
-		this.physicalDir = PhysicalDirectory.create(TEST_DIR_NAME);
+		this.logicalDir = PhysicalDirectory.create(TEST_DIR_NAME);
 	}
 	
 	@After
 	public void destroyTestDirectory() {
-		if (physicalDir.exists()) {
-			Directory testDir = Directory.scanDirectory(physicalDir);
-			PhysicalDirectory.destroy(testDir);
+		if (logicalDir.getPhysicalFile().exists()) {
+			PhysicalDirectory.destroy(logicalDir.getDirectory());
 		}
+	}
+	
+	private void reScanTestDirectory() {
+		this.logicalDir.getDirectory().reScan();
 	}
 
 	@Test
 	public void shouldFindDirectory() {
-		assertEquals(true, physicalDir.isDirectory());
+		assertEquals(true, logicalDir.isDirectory());
 	}
 	
 	@Test
 	public void shouldFindEmptyDirectory() {
-		File testDir = new File(physicalDir);
 		
-		assertEquals(0l, testDir.getDirectory().getNumberOfFiles());
+		assertEquals(0l, logicalDir.getDirectory().getNumLocalFiles());
 	}
 	
 	@Test
 	public void shouldFindDirectoryWithOneFile() {
 		String fileName = TEST_DIR_NAME + java.io.File.separator + "testFile.txt";
 		PhysicalFile.create(fileName);
-		File testDir = new File(physicalDir);
 		
-		assertEquals(1l, testDir.getDirectory().getNumberOfFiles());
+		this.reScanTestDirectory();
+		assertEquals(1l, logicalDir.getDirectory().getNumLocalFiles());
 	}
 	
 	@Test
@@ -65,9 +66,8 @@ public class DirectoryTest {
 			PhysicalFile.create(fileName);	
 		}
 		
-		File testDir = new File(physicalDir);
-		
-		assertEquals(amountOfFiles, testDir.getDirectory().getNumberOfFiles());
+		this.reScanTestDirectory();
+		assertEquals(amountOfFiles, logicalDir.getDirectory().getNumLocalFiles());
 	}
 	
 	@Test
@@ -78,24 +78,22 @@ public class DirectoryTest {
 		PhysicalFile.create(fileName);
 		PhysicalDirectory.create(subDirName);
 		
-		File testDir = new File(physicalDir);
-		
-		assertEquals(2l, testDir.getDirectory().getNumberOfFiles());
+		this.reScanTestDirectory();
+		assertEquals(2l, logicalDir.getDirectory().getNumLocalFiles());
 	}
 	
 	@Test
 	public void shouldFindFileWithinSubDirectory() {
 		String fileName = TEST_DIR_NAME + java.io.File.separator + "testFile.txt";
-		String subDirName = TEST_DIR_NAME + java.io.File.separator + TEST_DIR_NAME + "subDir";
+		String subDirName = TEST_DIR_NAME + java.io.File.separator + "subDir";
 		String subFileName = subDirName + java.io.File.separator + "testFileSubDir.txt";
 		
 		PhysicalFile.create(fileName);
 		PhysicalDirectory.create(subDirName);
 		PhysicalFile.create(subFileName);
 		
-		File testDir = new File(physicalDir);
-		
-		assertEquals(2l, testDir.getDirectory().getNumberOfFiles());
+		this.reScanTestDirectory();
+		assertEquals(3l, logicalDir.getDirectory().getNumTotalFiles());
 	}
 
 }

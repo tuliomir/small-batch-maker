@@ -5,13 +5,14 @@ import com.tuliomir.smallbatchmaker.File;
 
 public class PhysicalDirectory {
 	
-	public static java.io.File create(String directoryName) {
-		java.io.File directory = new java.io.File(directoryName);
-		boolean success = directory.mkdir();
+	public static File create(String directoryName) {
+		java.io.File physicalDirectory = new java.io.File(directoryName);
+		boolean success = physicalDirectory.mkdir();
 		if (!success) {
 			System.err.println("Unable to create directory.");
 		}
-		return directory;
+		File logicalFile = new File(physicalDirectory);
+		return logicalFile;
 	}
 	
 	public static void destroy(java.io.File physicalDirectory) {

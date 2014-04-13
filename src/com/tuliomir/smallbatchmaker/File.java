@@ -15,8 +15,9 @@ public class File {
 	private boolean isDirectory;
 	private Directory directory;
 	private java.io.File physicalFile;
+	private Directory parentDirectory;
 	
-	public File(java.io.File physicalFile) {
+	public File(java.io.File physicalFile, Directory parentDirectory) {
 		this.physicalFile = physicalFile;
 		this.fileSize = physicalFile.length();
 		this.fileName = physicalFile.getName();
@@ -25,10 +26,16 @@ public class File {
 		this.filePath = absolutePath.
 		    substring(0,absolutePath.lastIndexOf(java.io.File.separator));
 		
+		this.parentDirectory = parentDirectory;
+		
 		this.isDirectory = physicalFile.isDirectory();
 		if (this.isDirectory) {
-			this.directory = Directory.scanDirectory(this.physicalFile);
+			this.directory = Directory.scanDirectory(this);
 		}
+	}
+	
+	public File(java.io.File physicalFile){
+		this(physicalFile, null);
 	}
 
 	/**
@@ -75,5 +82,12 @@ public class File {
 	 */
 	public void setDirectory(Directory directory) {
 		this.directory = directory;
+	}
+
+	/**
+	 * @return the parentDirectory
+	 */
+	public Directory getParentDirectory() {
+		return parentDirectory;
 	}
 }

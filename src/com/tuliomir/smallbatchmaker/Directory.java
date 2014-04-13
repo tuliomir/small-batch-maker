@@ -10,55 +10,80 @@ import java.util.ArrayList;
  *
  */
 public class Directory {
-	private String directoryName;
-	private ArrayList<File> listOfFiles;
-	private java.io.File physicalDirectory;
+	private File logicalFile;
+	private ArrayList<File> listOfLocalFiles;
+	private long numTotalFiles = 0;
 
-	public static Directory scanDirectory(java.io.File physicalDirectory) {
-		Directory result = new Directory(physicalDirectory);
+	public static Directory scanDirectory(File logicalFile) {
+		Directory result = new Directory(logicalFile);
 		result.scan();
 		return result;
 	}
 	
-	private Directory(java.io.File physicalDirectory) {
-		this.physicalDirectory = physicalDirectory;
-		if (!this.physicalDirectory.isDirectory()) {
-			System.err.println("Invalid directory: " + physicalDirectory.getAbsolutePath());
+	private Directory(File logicalFile) {
+		this.logicalFile = logicalFile;
+		if (!this.logicalFile.isDirectory()) {
+			System.err.println("Invalid directory: " + logicalFile.getPhysicalFile().getAbsolutePath());
 			return;
 		}
-		this.directoryName = physicalDirectory.getName();
-		this.listOfFiles = new ArrayList<File>();
+		this.listOfLocalFiles = new ArrayList<File>();
 	}
 	
 	private void scan() {
-		for (final java.io.File fileEntry : this.physicalDirectory.listFiles()) {
-	        this.listOfFiles.add(new File(fileEntry));
+		for (final java.io.File fileEntry : this.logicalFile.getPhysicalFile().listFiles()) {
+			this.numTotalFiles++;
+	        this.listOfLocalFiles.add(new File(fileEntry, this));
 	    }
+		
+		// Incrementing parent directory number of files
+		if (null != this.logicalFile.getParentDirectory()) {
+			this.logicalFile.getParentDirectory().addToTotalFiles(getNumLocalFiles());
+		}
 	}
 	
-	public long getNumberOfFiles() {
-		return this.listOfFiles.size();
+	/**
+	 * Empties the local info and rescans the directory and all its sub-directories.
+	 */
+	public void reScan() {
+		this.numTotalFiles = 0;
+		this.listOfLocalFiles.clear();
+		this.scan();
+	}
+	
+	protected void addToTotalFiles(long amountOfNewFiles) {
+		this.numTotalFiles = this.numTotalFiles + amountOfNewFiles;
+	}
+	
+	public long getNumLocalFiles() {
+		return this.listOfLocalFiles.size();
 	}
 
 	/**
 	 * @return the directoryName
 	 */
 	public String getDirectoryName() {
-		return directoryName;
+		return this.logicalFile.getFileName();
 	}
 
 	/**
 	 * @return the listOfFiles
 	 */
 	public ArrayList<File> getListOfFiles() {
-		return listOfFiles;
+		return listOfLocalFiles;
 	}
 
 	/**
 	 * @return the physicalDirectory
 	 */
 	public java.io.File getPhysicalDirectory() {
-		return physicalDirectory;
+		return this.logicalFile.getPhysicalFile();
+	}
+
+	/**
+	 * @return the numTotalFiles
+	 */
+	public long getNumTotalFiles() {
+		return numTotalFiles;
 	}
 
 }
