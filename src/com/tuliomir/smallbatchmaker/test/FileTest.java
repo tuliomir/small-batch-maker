@@ -5,8 +5,6 @@ package com.tuliomir.smallbatchmaker.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,10 +54,9 @@ public class FileTest {
 	public void shouldReturnSizeCorrectly() {
 		String testString;
 		int stringLength;
-		Random randomGenerator = new Random();
 		
 		// Generating random string
-		stringLength = 1 + randomGenerator.nextInt(100);
+		stringLength = 1 + Util.randomInt(1, 100);
 		StringBuffer outputBuffer = new StringBuffer(stringLength);
 		
 		for (int i=0; i<stringLength; i++) {

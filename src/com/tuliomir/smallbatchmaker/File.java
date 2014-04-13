@@ -13,6 +13,7 @@ public class File {
 	private String fileName;
 	private String filePath;
 	private boolean isDirectory;
+	private Directory directory;
 	private java.io.File physicalFile;
 	
 	public File(java.io.File physicalFile) {
@@ -25,6 +26,9 @@ public class File {
 		    substring(0,absolutePath.lastIndexOf(java.io.File.separator));
 		
 		this.isDirectory = physicalFile.isDirectory();
+		if (this.isDirectory) {
+			this.directory = Directory.scanDirectory(this.physicalFile);
+		}
 	}
 
 	/**
@@ -57,5 +61,19 @@ public class File {
 	 */
 	public java.io.File getPhysicalFile() {
 		return physicalFile;
+	}
+
+	/**
+	 * @return the directory
+	 */
+	public Directory getDirectory() {
+		return directory;
+	}
+
+	/**
+	 * @param directory the directory to set
+	 */
+	public void setDirectory(Directory directory) {
+		this.directory = directory;
 	}
 }

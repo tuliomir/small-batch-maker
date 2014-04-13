@@ -14,7 +14,13 @@ public class Directory {
 	private ArrayList<File> listOfFiles;
 	private java.io.File physicalDirectory;
 
-	public Directory(java.io.File physicalDirectory) {
+	public static Directory scanDirectory(java.io.File physicalDirectory) {
+		Directory result = new Directory(physicalDirectory);
+		result.scan();
+		return result;
+	}
+	
+	private Directory(java.io.File physicalDirectory) {
 		this.physicalDirectory = physicalDirectory;
 		if (!this.physicalDirectory.isDirectory()) {
 			System.err.println("Invalid directory: " + physicalDirectory.getAbsolutePath());
@@ -24,14 +30,14 @@ public class Directory {
 		this.listOfFiles = new ArrayList<File>();
 	}
 	
-	public long getNumberOfFiles() {
-		return this.listOfFiles.size();
-	}
-	
-	public void scan() {
+	private void scan() {
 		for (final java.io.File fileEntry : this.physicalDirectory.listFiles()) {
 	        this.listOfFiles.add(new File(fileEntry));
 	    }
+	}
+	
+	public long getNumberOfFiles() {
+		return this.listOfFiles.size();
 	}
 
 	/**
@@ -46,6 +52,13 @@ public class Directory {
 	 */
 	public ArrayList<File> getListOfFiles() {
 		return listOfFiles;
+	}
+
+	/**
+	 * @return the physicalDirectory
+	 */
+	public java.io.File getPhysicalDirectory() {
+		return physicalDirectory;
 	}
 
 }

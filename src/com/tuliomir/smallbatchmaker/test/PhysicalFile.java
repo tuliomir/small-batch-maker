@@ -63,6 +63,10 @@ public class PhysicalFile {
 	}
 	
 	public static void destroy(File file) {
-		file.getPhysicalFile().delete();
+		if (file.isDirectory()) {
+			PhysicalDirectory.destroy(file.getDirectory());
+		} else {
+			file.getPhysicalFile().delete();
+		}
 	}
 }
