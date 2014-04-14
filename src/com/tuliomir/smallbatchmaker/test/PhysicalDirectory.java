@@ -81,8 +81,43 @@ public class PhysicalDirectory {
 	 * @return Physical file reference to the new directory
 	 */
 	public static java.io.File createPhysicalSubDirectory(String directoryName, String newDirName) {
-		String dirName = directoryName + java.io.File.separator + newDirName;
-		
+		String dirName = pathToDirectory(directoryName, newDirName);
+
 		return createPhysicalDirectory(dirName);
+	}
+	
+	/**
+	 * Returns the path to a new file, with the correct separator names.<br>
+	 * Ex.: On a linux OS, the invocation <code>pathToDirectory("testDir", "myFile.txt")</code>
+	 * will result in <code>testDir/myFile.txt</code>
+	 * @param path Directory
+	 * @param newFileName Destination file/directory
+	 * @return String concatenating the file with the path.
+	 */
+	public static String pathToDirectory(String path, String newFileName){
+		return (newFileName.isEmpty()) ? 
+				path : 
+				path + java.io.File.separator + newFileName;
+	}
+	
+	/**
+	 * Creates a directory with files inside it.<br>
+	 * All files will be created with the filename format: <code>folderName-size-index.txt</code>
+	 * @param subDirectoryName Name of the new directory
+	 * @param fileSize Size of each file to be created
+	 * @param numberOfFiles Number of files to be created
+	 * @return Physical <code>java.io.File</code> representation of the new directory
+	 */
+	public static java.io.File createDirectoryWithFiles(String pathToDirectory, String subDirectoryName, int fileSize, int numberOfFiles) {
+		final String TEST_FILE_TXT = "%s-%03d-%03d.txt"; // Format: folderName-size-index.txt
+		final String newFilesPath = pathToDirectory(pathToDirectory, subDirectoryName);
+		java.io.File directoryWithFiles = createPhysicalDirectory(newFilesPath);
+		
+		
+		for (int i=0; i<numberOfFiles; i++) {
+			PhysicalFile.createFileWithinDirectory(newFilesPath,
+					String.format(TEST_FILE_TXT, subDirectoryName, fileSize, i), fileSize);
+		}
+		return directoryWithFiles;
 	}
 }

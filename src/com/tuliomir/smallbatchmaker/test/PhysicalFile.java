@@ -141,7 +141,7 @@ public class PhysicalFile {
 	 * @return Physical file reference to the new file
 	 */
 	public static java.io.File createFileWithinDirectory(String directoryName, String newFileName, int fileSize) {
-		String fileName = directoryName + java.io.File.separator + newFileName;
+		String fileName = PhysicalDirectory.pathToDirectory(directoryName, newFileName);
 		
 		return PhysicalFile.createFileWithSize(fileName, fileSize);
 	}
