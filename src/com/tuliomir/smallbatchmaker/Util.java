@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tuliomir.smallbatchmaker.test;
+package com.tuliomir.smallbatchmaker;
 
 import java.util.Random;
 

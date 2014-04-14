@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tuliomir.smallbatchmaker.File;
+import com.tuliomir.smallbatchmaker.Util;
 
 /**
  * @author tuliomiranda
