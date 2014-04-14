@@ -118,4 +118,17 @@ public class PhysicalFile {
 		
 		return result;
 	}
+	
+	/**
+	 * Creates a file within a directory.
+	 * This method eases the operations with File Separator names. 
+	 * @param directoryName Directory which will have the new file
+	 * @param newFileName Name of the new file
+	 * @return Physical file reference to the new file
+	 */
+	public static java.io.File createFileWithinDirectory(String directoryName, String newFileName) {
+		String fileName = directoryName + java.io.File.separator + newFileName;
+		
+		return PhysicalFile.create(fileName);
+	}
 }
