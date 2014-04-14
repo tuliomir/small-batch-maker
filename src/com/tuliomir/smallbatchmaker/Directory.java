@@ -5,8 +5,6 @@ package com.tuliomir.smallbatchmaker;
 
 import java.util.ArrayList;
 
-import com.tuliomir.smallbatchmaker.test.Util;
-
 /**
  * Logical directory manipulation
  * <b>Important</b>: For the sake of this application, a folder is counted as a file,
