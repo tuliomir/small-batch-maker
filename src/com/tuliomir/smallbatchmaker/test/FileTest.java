@@ -54,7 +54,7 @@ public class FileTest {
 	public void shouldReturnSizeCorrectly() {
 		int stringLength = Util.randomInt(1, 100);
 		
-		File testFile = PhysicalFile.createFileWithSize(EXAMPLE_TXT_FILENAME, stringLength);
+		File testFile = new File(PhysicalFile.createFileWithSize(EXAMPLE_TXT_FILENAME, stringLength));
 		
 		assertEquals(stringLength, testFile.getFileSize());
 	}

@@ -89,10 +89,13 @@ public class DirectoryTest {
 		assertEquals(3l, logicalDir.getDirectory().getNumTotalFiles());
 	}
 	
-	@Ignore
 	@Test
-	public void shouldHaveSizeOfAllLocalFiles() {
+	public void shouldHaveSizeOfLocalFiles() {
+		PhysicalFile.createFileWithinDirectory(ROOT_DIR_NAME, "10" + TEST_FILE_TXT, 10);
+		PhysicalFile.createFileWithinDirectory(ROOT_DIR_NAME, "20" + TEST_FILE_TXT, 20);
 		
+		this.reScanTestDirectory();
+		assertEquals(30l, logicalDir.getDirectory().getLocalSize());
 	}
 
 }

@@ -13,6 +13,7 @@ public class Directory {
 	private File logicalFile;
 	private ArrayList<File> listOfLocalFiles;
 	private long numTotalFiles = 0;
+	private long localSize = 0;
 
 	public static Directory scanDirectory(File logicalFile) {
 		Directory result = new Directory(logicalFile);
@@ -31,8 +32,10 @@ public class Directory {
 	
 	private void scan() {
 		for (final java.io.File fileEntry : this.logicalFile.getPhysicalFile().listFiles()) {
+			File newFile = new File(fileEntry, this);
 			this.numTotalFiles++;
-	        this.listOfLocalFiles.add(new File(fileEntry, this));
+			this.localSize += newFile.getFileSize();
+	        this.listOfLocalFiles.add(newFile);
 	    }
 		
 		// Incrementing parent directory number of files
@@ -84,6 +87,10 @@ public class Directory {
 	 */
 	public long getNumTotalFiles() {
 		return numTotalFiles;
+	}
+
+	public long getLocalSize() {
+		return this.localSize;
 	}
 
 }

@@ -102,7 +102,7 @@ public class PhysicalFile {
 	 * @param fileSize Size of the file in bytes
 	 * @return Logical encapsulation of the physical file created 
 	 */
-	public static File createFileWithSize(String fileName, int fileSize){
+	public static java.io.File createFileWithSize(String fileName, int fileSize){
 		String testString;
 		
 		// Generating random string
@@ -114,7 +114,7 @@ public class PhysicalFile {
 		testString = outputBuffer.toString();
 		
 		// Pushing the string into the file
-		File result = new File(create(fileName, testString));
+		java.io.File result = create(fileName, testString);
 		
 		return result;
 	}
@@ -130,5 +130,19 @@ public class PhysicalFile {
 		String fileName = directoryName + java.io.File.separator + newFileName;
 		
 		return PhysicalFile.create(fileName);
+	}
+	
+	/**
+	 * Creates a file with a specific size within a directory.
+	 * This method eases the operations with File Separator names. 
+	 * @param directoryName Directory which will have the new file
+	 * @param newFileName Name of the new file
+	 * @param fileSize Size of the new file
+	 * @return Physical file reference to the new file
+	 */
+	public static java.io.File createFileWithinDirectory(String directoryName, String newFileName, int fileSize) {
+		String fileName = directoryName + java.io.File.separator + newFileName;
+		
+		return PhysicalFile.createFileWithSize(fileName, fileSize);
 	}
 }
