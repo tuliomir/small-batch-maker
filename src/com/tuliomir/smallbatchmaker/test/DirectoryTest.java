@@ -3,11 +3,10 @@
  */
 package com.tuliomir.smallbatchmaker.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.tuliomir.smallbatchmaker.File;
@@ -96,6 +95,17 @@ public class DirectoryTest {
 		
 		this.reScanTestDirectory();
 		assertEquals(30l, logicalDir.getDirectory().getLocalSize());
+	}
+	
+	@Test
+	public void shouldHaveSizeOfAllFilesRecursively() {
+		PhysicalFile.createFileWithinDirectory(ROOT_DIR_NAME, "10" + TEST_FILE_TXT, 10);
+		PhysicalFile.createFileWithinDirectory(ROOT_DIR_NAME, "20" + TEST_FILE_TXT, 20);
+		java.io.File subDir = PhysicalDirectory.createPhysicalSubDirectory(ROOT_DIR_NAME, SUB_DIRECTORY_NAME);
+		PhysicalFile.createFileWithinDirectory(subDir.getAbsolutePath() ,"sub" + TEST_FILE_TXT, 40);
+		
+		this.reScanTestDirectory();
+		assertEquals(70l, logicalDir.getDirectory().getTotalSize());
 	}
 
 }

@@ -33,4 +33,8 @@ public class Util {
 
 	    return randomNum;
 	}
+	
+	public static void println(String string) {
+		System.out.println(string);
+	}
 }
